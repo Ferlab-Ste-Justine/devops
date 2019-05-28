@@ -1,0 +1,38 @@
+version: '3.2'
+services:
+  spark-master:
+    image: chusj/spark-master:2.4.0-hadoop2.7
+    container_name: sparkmaster
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+      - "6066:6066"
+      - "50070:50070"
+    environment:
+      - INIT_DAEMON_STEP=setup_spark
+    networks:
+      - sparknetwork
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.app_type == sparkmaster]
+
+  spark-worker:
+    image: bde2020/spark-worker:2.4.0-hadoop2.7
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    networks:
+      - sparknetwork
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+    deploy:
+      mode: 'global'
+
+networks:
+  sparknetwork:
+    driver: overlay
+    attachable: true
