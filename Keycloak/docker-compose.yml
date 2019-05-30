@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.3'
 
 services:
 
@@ -7,12 +7,12 @@ services:
     restart: always
     environment:
       POSTGRES_USER: "keycloak"
-      POSTGRES_PASSWORD: ${ppassword}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
       POSTGRES_DB: "keycloak"
     volumes:
       - ./postgres:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
+    expose:
+      - "5432"
     networks:
       - keycloak
 
@@ -24,15 +24,14 @@ services:
     ports:
       - 8443:8443
     environment:
-      KEYCLOAK_USER: "leAdmin"
-      KEYCLOAK_PASSWORD: ${kcpassword}
+      KEYCLOAK_USER: "admin"
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
       DB_VENDOR: "postgres"
-      DB_PASSWORD: ${ppassword}
+      DB_PASSWORD: ${POSTGRESQL_PASSWORD}
       JDBC_PARAMS: "connectTimeout=30"
       DB_ADDR: "postgres"
     networks:
       - keycloak
-
 
 networks:
   keycloak:
