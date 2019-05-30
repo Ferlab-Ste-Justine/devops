@@ -1,3 +1,5 @@
+Default Keycloak user is `admin` and it's password is `KEYCLOAK_PASSWORD`.
+
 ```
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker-compose up
 or
