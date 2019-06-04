@@ -1,7 +1,9 @@
 Default Keycloak user is `admin` and it's password is `KEYCLOAK_PASSWORD`.
-####Keycloak will have a Clin Realm pre-configured with clin-proxi-api client ID 
+Default clin-proxi-api secret is '01b99f28-1331-4fec-903b-c2e8043cec77'
+####Keycloak will have a Clin Realm pre-configured with clin-proxi-api client ID  
 
-User creation need to be done after
+Users creation need to be done after and changing default secret for production
+Default clin-proxi-api secret is '01b99f28-1331-4fec-903b-c2e8043cec77'
 ```
 on local machine with docker-compose...
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker-compose up
