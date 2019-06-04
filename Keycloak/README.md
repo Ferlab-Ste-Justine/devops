@@ -1,10 +1,12 @@
 Default Keycloak user is `admin` and it's password is `KEYCLOAK_PASSWORD`.
+####Keycloak will have a Clin Realm pre-configured with clin-proxi-api client ID 
 
+User creation need to be done after
 ```
 on local machine with docker-compose...
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker-compose up
 ```
-For swar docker cluster 
+For swarm docker cluster 
 You can limit the set of nodes where a task can be scheduled by defining constraint expressions. Multiple constraints find nodes that satisfy every expression (AND match). Constraints can match node or Docker Engine labels
 
 ```nodeUpdate.sh``` will create a label that will be used by docker stack deploy (next).

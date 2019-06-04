@@ -29,6 +29,8 @@ services:
     ports:
       - 8443:8443
       - 8080:8080
+    volumes:
+      - .:/tmp
     environment:
       KEYCLOAK_USER: "admin"
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
@@ -36,6 +38,8 @@ services:
       DB_PASSWORD: ${POSTGRESQL_PASSWORD}
       JDBC_PARAMS: "connectTimeout=30"
       DB_ADDR: "postgres"
+      KEYCLOAK_IMPORT: /tmp/realm-export.json
+
     networks:
       - keycloak
 
