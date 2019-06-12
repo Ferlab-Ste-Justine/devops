@@ -1,0 +1,16 @@
+version: '3.2'
+
+services:
+  registry:
+    ports:
+      - 5000:5000
+    container_name: registry
+    image: registry:2.5.0
+    volumes:
+      - ./repo:/var/lib/registry
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]

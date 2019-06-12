@@ -1,10 +1,12 @@
 version: '3.2'
 services:
   elasticsearch:
+    networks:
+      - proxy
     image: 'elasticsearch:6.7.0'
     command: [ elasticsearch, -E, network.host=0.0.0.0, -E, discovery.zen.ping.unicast.hosts=elasticsearch, -E, discovery.zen.minimum_master_nodes=1 ]
     volumes:
-      - /home/ubuntu/esdata:/usr/share/elasticsearch/data
+      - ./esdata:/usr/share/elasticsearch/data
     deploy:
       mode: 'global'
       placement:
@@ -30,3 +32,8 @@ services:
             proxy_cache_bypass $$http_upgrade;
         }
       }' | tee /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+
+
+networks:
+  proxy:
+    external: true

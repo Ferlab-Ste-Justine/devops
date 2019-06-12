@@ -6,6 +6,7 @@ Users creation need to be done after and changing default secret for production
 Default clin-proxi-api secret is '01b99f28-1331-4fec-903b-c2e8043cec77'
 ```
 on local machine with docker-compose...
+docker network create -d overlay --attachable proxy
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker-compose up
 ```
 For swarm docker cluster 
@@ -18,6 +19,7 @@ Since postgresql service will used a volume, we need to make sure the same node 
 on a swarm cluster
 ./nodeUpdate.sh
 mkdir postgres
+docker network create -d overlay --attachable proxy
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker stack deploy -c docker-compose.yml test
 ```
 
