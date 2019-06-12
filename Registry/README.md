@@ -1,18 +1,25 @@
 Go to a manager node 
 ```
-docker stack deploy -c docker-compose.yml qa
+docker stack deploy -c docker-compose.yml qaReg
 ```
-Open a socket secure tunnel
+To test
+
 ```
-ssh -L 5000:localhost:5000 ubuntu@...
+docker pull alpine
+docker tag alpine localhost:5000/alpine
+docker push localhost:5000/alpine
+
 ```
 
-Build, tag and push to remote registry (QA)
-i.e. (for Proxy-api)
+
+Build, tag and push to registry
+
 ```
-docker-compose 
-docker build . --tag=chusj/clin-proxy-api-{endpoint}-service
-docker images [TAKE THE LATEST ID)
-docker tag [LATEST ID] chusj/clin-proxy-api-{endpoint}-service:latest
-docker push
+copy docker.env .env
+nano .env
+docker-compose build 
+docker tag clin-proxy-api-auth-service localhost:5000/clin-proxy-api-auth-service:1.1
+docker push localhost:5000/clin-proxy-api-auth-service:1.1
+
+
 ```
