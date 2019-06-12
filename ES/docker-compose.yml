@@ -6,7 +6,7 @@ services:
     image: 'elasticsearch:6.7.0'
     command: [ elasticsearch, -E, network.host=0.0.0.0, -E, discovery.zen.ping.unicast.hosts=elasticsearch, -E, discovery.zen.minimum_master_nodes=1 ]
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+      - /home/ubuntu/esdata:/usr/share/elasticsearch/data
     deploy:
       mode: 'global'
       placement:
