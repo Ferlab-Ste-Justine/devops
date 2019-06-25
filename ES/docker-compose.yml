@@ -1,5 +1,7 @@
 version: '3.2'
 services:
+  networks:
+    - es
   elasticsearch:
     image: 'elasticsearch:6.7.0'
     command: [ elasticsearch, -E, network.host=0.0.0.0, -E, discovery.zen.ping.unicast.hosts=elasticsearch, -E, discovery.zen.minimum_master_nodes=1 ]
@@ -14,6 +16,7 @@ services:
   elastic:
     networks:
       - proxy
+      - es
     image: 'nginx:1'
     ports:
       - '9200:9200'
@@ -35,5 +38,6 @@ services:
 
 
 networks:
+  es:
   proxy:
     external: true
