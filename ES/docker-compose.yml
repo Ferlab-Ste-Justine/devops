@@ -13,7 +13,7 @@ services:
         constraints: [node.labels.app_role == elasticsearch]
       endpoint_mode: dnsrr
 
-  nginx:
+  elastic:
     image: 'nginx:1'
     ports:
       - '9200:9200'
