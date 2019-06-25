@@ -28,9 +28,13 @@ services:
       - postgres
     ports:
       - 8443:8443
-      - 8080:8080
     volumes:
       - .:/tmp
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.node_role == devops]
     environment:
       KEYCLOAK_USER: "admin"
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
@@ -42,6 +46,9 @@ services:
 
     networks:
       - keycloak
+      - proxy
 
 networks:
   keycloak:
+  proxy:
+    external: true
