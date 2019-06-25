@@ -1,7 +1,6 @@
 version: '3.2'
 services:
-  networks:
-    - es
+
   elasticsearch:
     networks:
       - es
