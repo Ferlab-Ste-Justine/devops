@@ -32,7 +32,6 @@ services:
       - 51415:51415
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
-      #- ./logstash.conf:/etc/logstash/conf.d/logstash.conf
     networks:
       - logging-network
 
@@ -45,12 +44,11 @@ services:
     networks:
       - logging-network
 
-#sudo docker run --network proxy --rm --volume=/var/run/docker.sock:/var/run/docker.sock gliderlabs/logspout syslog://logstash:51415
   logspout:
     image: gliderlabs/logspout
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: command: [ syslog://logstash:51415 ]
+    command: [ syslog://logstash:51415 ]
     deploy:
       mode: 'global'
     depends_on:
