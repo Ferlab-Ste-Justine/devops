@@ -1,0 +1,62 @@
+version: "3.3"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    networks:
+      - logging-network
+
+  #############################
+  # logstash:
+  # gelf and syslog configured
+  #    logging:
+  #      driver: gelf
+  #      options:
+  #        gelf-address: "udp://localhost:12201"
+  ################################
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.1.1
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.node_role == devops]
+    depends_on:
+      - elasticsearch
+    ports:
+      - 12201:12201/udp
+      - 51415:51415
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    networks:
+      - logging-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.1.1
+    depends_on:
+      - logstash
+    ports:
+      - 5601:5601
+    networks:
+      - logging-network
+
+  logspout:
+    image: gliderlabs/logspout
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: [ syslog://logstash:51415 ]
+    deploy:
+      mode: 'global'
+    depends_on:
+      - logstash
+    networks:
+      - logging-network
+
+
+networks:
+  logging-network:
+

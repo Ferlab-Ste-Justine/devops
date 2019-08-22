@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.7.0
+    ports:
+      - 5600:5601
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
