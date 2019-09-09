@@ -1,9 +1,10 @@
+# memcached for clin-workflow-etl
 version: '3'
 services:
   memcached:
     image: "memcached"
     ports:
-      - "11211:11211"
+      - "11212:11211"
     entrypoint:
       - memcached
-      - -m 64
+      - -m 6400
