@@ -42,11 +42,10 @@ docker network create -d overlay --attachable proxy
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker stack deploy -c docker-compose.yml test
 ```
 
-From your host, you can access the keycloak endpoints at:
+From your host, you can access the keycloak endpoints at (you'll need to accept that the certificate is not valid):
 
 ```
 https://localhost:8443/auth
-http://localhost:8080/auth
 ```
 
 When inside one of the containers, you can access the keycloak endpoints at:
