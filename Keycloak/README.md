@@ -1,35 +1,59 @@
-Default Keycloak user is `admin` and it's password is `KEYCLOAK_PASSWORD`.
-Default clin-proxi-api secret is '01b99f28-1331-4fec-903b-c2e8043cec77'
-####Keycloak will have a Clin Realm pre-configured with clin-proxi-api client ID  
+# Defaults
 
-Users creation need to be done after and changing default secret for production
-Default clin-proxi-api secret is '01b99f28-1331-4fec-903b-c2e8043cec77'
+The default Keycloak user is `admin` and it's password is `KEYCLOAK_PASSWORD`.
+
+The default clin-proxi-api secret is '01b99f28-1331-4fec-903b-c2e8043cec77'
+
+Keycloak will have a Clin Realm pre-configured with clin-proxi-api client ID  (see the **realm-export.json** file)
+
+# Postgres Volume Note
+
+The postgres container will be launched with its database directory mapped to the ```./postgres``` directory on the host.
+
+This allows the database data to be preserved in the event that the postgres container is destroyed.
+
+# Local docker-compose Setup
+
+Type: 
+
 ```
-on local machine with docker-compose...
 docker network create -d overlay --attachable proxy
-POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker-compose up
+POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker-compose up -d
 ```
-For swarm docker cluster 
-You can limit the set of nodes where a task can be scheduled by defining constraint expressions. Multiple constraints find nodes that satisfy every expression (AND match). Constraints can match node or Docker Engine labels
 
-```nodeUpdate.sh``` will create a label that will be used by docker stack deploy (next).
-Since postgresql service will used a volume, we need to make sure the same node always start psotgres to keep the keycloack configuration from reboot.
+# Local Swarm Docker Cluster Setup
+
+## Deployment Selectors Note
+
+The postgres database will only be deployed on a node that have a **db_role** label with a value of **postgresql**
+
+The keycloak service will only be deployed on a node that have a **node_role** label with a value of **devops**
+
+The ```nodeUpdate.sh``` will assign both labels to the local node so that both services will be deployable on it using Docker Swarm.
+
+## Procedure
+
+Type :
 
 ```
-on a swarm cluster
 ./nodeUpdate.sh
 mkdir postgres
 docker network create -d overlay --attachable proxy
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker stack deploy -c docker-compose.yml test
 ```
 
-Then go to 
+From your host, you can access the keycloak endpoints at:
+
 ```
 https://localhost:8443/auth
 http://localhost:8080/auth
 ```
-internal service is
+
+When inside one of the containers, you can access the keycloak endpoints at:
+
 ```
 https://keycloak:8443/auth
 http://keycloak:8080/auth
 ```
+
+Additionally, you'll need to create some users and change the default secrets.
