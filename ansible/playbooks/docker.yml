@@ -1,0 +1,8 @@
+- hosts: all
+
+  vars:
+    docker_edition: 'ce'
+    docker_compose_version: "1.24.1"
+
+  roles:
+    - geerlingguy.docker
