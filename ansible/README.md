@@ -1,21 +1,26 @@
 # About
 
-Dockerfile to build an ansible image and use it to run playbooks on remote hosts
+Dockerfile to build an ansible image and use it locally to run ansible playbooks on remote hosts
 
 # Playbooks
 
-- /opt/playbooks/docker.yml: Playbook that installs docker and docker-compose on all hosts
+- /opt/playbooks/docker.yml: Playbook that installs docker and docker-compose on all remote hosts
 
 # Usage Example
 
+Follow the following steps from your local:
 
-From the directory of this image:
+- Create an hosts file for the remote hosts you want to install docker and docker-compose on
+
+- Make sure you have an ssh key allowing you to login remotely on all remote hosts with a user that can run commands as root
+
+- Build the image by running the following from the directory of this README file:
 
 ```
 docker build -t chu-ansible .
 ```
 
-From your hosts file directory:
+- From the directory of your **hosts** file, run:
 
 ```
 docker run -v $(pwd)/hosts:/opt/hosts \
