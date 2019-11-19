@@ -5,6 +5,7 @@ Dockerfile to build an ansible image and use it locally to run ansible playbooks
 # Playbooks
 
 - /opt/playbooks/docker.yml: Playbook that installs docker and docker-compose on all remote hosts
+- /opt/playbooks/letsencrypt.yml: Generate a letsencrypt certificate on a remote host
 
 # Usage Example
 
@@ -20,14 +21,32 @@ Follow the following steps from your local:
 docker build -t chu-ansible .
 ```
 
+To install **docker** and **docker-compose** on the remote hosts:
+
 - From the directory of your **hosts** file, run:
 
 ```
 docker run -v $(pwd)/hosts:/opt/hosts \
-           -v ~/.ssh:/.ssh chu-ansible \
+           -v ~/.ssh:/.ssh \
+           chu-ansible \
            -i /opt/hosts \
            -u ubuntu \
            --private-key=/.ssh/id_rsa \
            --become \
            /opt/playbooks/docker.yml
+```
+
+To setup a certificate on the remote hosts (if a certificate is present at the **letsencrypt** directory, it will be uploaded remotely, else a new certificate will be created remotely and downloaded):
+
+```
+docker run -v $(pwd)/hosts:/opt/hosts \
+           -v ~/.ssh:/.ssh \
+           -v $(pwd):/opt/letsencrypt \
+           chu-ansible \
+           -i /opt/hosts \
+           -u ubuntu \
+           --private-key=/.ssh/id_rsa \
+           --become \
+           /opt/playbooks/letsencrypt.yml \
+           --extra-vars "letsencrypt_email=some@email.com letsencrypt_domain=some@domain.com"
 ```

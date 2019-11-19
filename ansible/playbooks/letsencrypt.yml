@@ -1,0 +1,4 @@
+- hosts: all
+
+  roles:
+    - { role: ./roles/letsencrypt, letsencrypt_email: letsencrypt_email, letsencrypt_domain: letsencrypt_domain, become: true }
