@@ -1,0 +1,52 @@
+- name: Check for letsencrypt archive
+  local_action: stat path=/opt/letsencrypt/letsencrypt.tgz
+  register: local_certificate
+
+- name: Copy local certificate tar
+  copy: src=/opt/letsencrypt/letsencrypt.tgz dest=/opt/letsencrypt.tgz
+  when: local_certificate.stat.exists == true
+
+- name: Extract certificate tar
+  unarchive:
+    remote_src: true
+    src: /opt/letsencrypt.tgz
+    dest: /etc
+  when: local_certificate.stat.exists == true
+
+- name: Generate certificate if missing or renew it if expired
+  docker_container:
+    name: letsencrypt-certificate
+    image: certbot/certbot:v0.40.1
+    network_mode: host
+    volumes: /etc/letsencrypt:/etc/letsencrypt
+    detach: false
+    command: "certonly --standalone --agree-tos -n -m '{{ letsencrypt_email }}' --domain {{ letsencrypt_domain }}"
+  register: result
+
+- name: Certificate generation/renewal output
+  debug:
+    var: result.container.Output
+    verbosity: 0
+
+- name: Cleanup certificate generation container
+  docker_container:
+    name: letsencrypt-certificate
+    state: absent
+
+- name: Archive letsencrypt directory
+  archive:
+    owner: root
+    mode: 0600
+    path: /etc/letsencrypt
+    dest: /opt/letsencrypt.tgz
+
+- name: Copy remote archive locally
+  fetch:
+    src: /opt/letsencrypt.tgz
+    dest: /opt/letsencrypt/letsencrypt.tgz
+    flat: true
+
+- name: Remove remote tar archive
+  file:
+    path: /opt/letsencrypt.tgz
+    state: absent
