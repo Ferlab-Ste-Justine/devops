@@ -1,0 +1,4 @@
+---
+haproxy_network_mode: 'bridge'
+haproxy_exposed_ports: []
+haproxy_networks: []
