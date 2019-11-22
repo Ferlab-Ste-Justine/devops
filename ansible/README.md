@@ -6,7 +6,7 @@ Dockerfile to build an ansible image and use it locally to run ansible playbooks
 
 - /opt/playbooks/docker.yml: Playbook that installs docker and docker-compose on all remote hosts
 - /opt/playbooks/letsencrypt.yml: Generate a letsencrypt certificate on a remote host
-
+- /opt/playbooks/haproxy.yml: Setting a dockerized reverse-proxy making use of letsencrypt certificates
 # Usage Example
 
 Follow the following steps from your local:
@@ -48,5 +48,20 @@ docker run -v $(pwd)/hosts:/opt/hosts \
            --private-key=/.ssh/id_rsa \
            --become \
            /opt/playbooks/letsencrypt.yml \
-           --extra-vars "letsencrypt_email=some@email.com letsencrypt_domain=some@domain.com"
+           --extra-vars "letsencrypt_email=some@email.com letsencrypt_domain=some.domain.com"
+```
+
+To run an haproxy container instance with the certificates you just generated running on host network:
+
+```
+docker run -v $(pwd)/hosts:/opt/hosts \
+           -v ~/.ssh:/.ssh \
+           -v $(pwd)/haproxy.cfg:/opt/haproxy/haproxy.cfg \
+           chu-ansible \
+           -i /opt/hosts \
+           -u ubuntu \
+           --private-key=/.ssh/id_rsa \
+           --become \
+           /opt/playbooks/haproxy.yml \
+           --extra-vars "haproxy_network_mode=host haproxy_networks=[] haproxy_exposed_ports=[] letsencrypt_domain=some.domain.com"
 ```

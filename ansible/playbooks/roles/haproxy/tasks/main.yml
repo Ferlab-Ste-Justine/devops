@@ -1,0 +1,21 @@
+- name: Ensure certificate is generated
+  shell: 
+    cmd: "cat /etc/letsencrypt/live/{{ letsencrypt_domain }}/fullchain.pem /etc/letsencrypt/live/{{ letsencrypt_domain }}/privkey.pem > /etc/letsencrypt/live/{{ letsencrypt_domain }}/{{ letsencrypt_domain }}.pem"
+    chdir: "/etc/letsencrypt/live/{{ letsencrypt_domain }}"
+
+- name: Copy haproxy configuration file
+  copy: 
+    src: /opt/haproxy/
+    dest: /opt/haproxy/
+
+- name: Launch haproxy
+  docker_container:
+    name: reverse-proxy
+    image: haproxy:2.0
+    network_mode: "{{ haproxy_network_mode }}"
+    ports: "{{ haproxy_exposed_ports }}"
+    networks: "{{ haproxy_networks }}"
+    volumes: 
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /opt/haproxy:/usr/local/etc/haproxy:ro
+    restart_policy: always

@@ -1,0 +1,4 @@
+- hosts: all
+
+  roles:
+    - { role: ./roles/haproxy, haproxy_network_mode: haproxy_network_mode, haproxy_networks: haproxy_networks, haproxy_exposed_ports: haproxy_exposed_ports, letsencrypt_domain: letsencrypt_domain, become: true }
