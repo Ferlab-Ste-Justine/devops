@@ -31,7 +31,21 @@ The keycloak service will only be deployed on a node that have a **node_role** l
 
 The ```nodeUpdate.sh``` will assign both labels to the local node so that both services will be deployable on it using Docker Swarm.
 
-## Procedure
+## Setup With Scripts
+
+To launch, run:
+
+```
+./LauchLocal.sh
+```
+
+To tear it down, run:
+
+```
+./tearDownLocal.sh
+```
+
+## Setup Manually
 
 Type :
 
@@ -41,6 +55,8 @@ mkdir postgres
 docker network create -d overlay --attachable proxy
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker stack deploy -c docker-compose.yml test
 ```
+
+## How To Access It
 
 From your host, you can access the keycloak endpoints at (you'll need to accept that the certificate is not valid):
 
