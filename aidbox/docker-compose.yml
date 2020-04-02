@@ -1,0 +1,39 @@
+version: '3.5'
+services:
+  devbox:
+    image: "${AIDBOX_IMAGE}"
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - "devbox-db"
+    ports:
+      - "${AIDBOX_PORT}:${AIDBOX_PORT}"
+    env_file:
+      - .env
+    environment:
+      PGHOST: devbox-db
+    networks:
+      - aidbox
+      - aidbox-db
+  devbox-db:
+    image: "${PGIMAGE}"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.db_role == postgresql]
+    volumes:
+      - "./pgdata:/data"
+    environment:
+      POSTGRES_USER:     "${PGUSER}"
+      POSTGRES_PASSWORD: "${PGPASSWORD}"
+      POSTGRES_DB:       "${PGDATABASE}"
+    networks:
+      - aidbox-db
+
+networks:
+  aidbox:
+    external: true
+  aidbox-db:
+    external: true
