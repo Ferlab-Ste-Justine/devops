@@ -1,0 +1,6 @@
+[submodule "clin-workflows/fhir-import/fhir-import"]
+	path = clin-workflows/fhir-import/fhir-import
+	url = https://github.com/cr-ste-justine/fhir-import.git
+[submodule "clin-workflows/fhir-import/clin-etl-FHIR"]
+	path = clin-workflows/fhir-import/clin-etl-FHIR
+	url = https://github.com/cr-ste-justine/clin-etl-FHIR.git
