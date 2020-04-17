@@ -27,3 +27,9 @@ Run the following to clear aidbox containers in your environment:
 ```
 
 Note that if you also want to clear your database data, you'll have to delete the **pgdata** directory.
+
+## Wiping Out Database
+
+To wipe out your database and start fresh, run the **wipe_db.sh** script.
+
+To be used outside of production only.
