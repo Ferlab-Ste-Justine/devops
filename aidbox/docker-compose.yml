@@ -16,6 +16,13 @@ services:
     networks:
       - aidbox
       - aidbox-db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${AIDBOX_PORT}/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
   devbox-db:
     image: "${PGIMAGE}"
     deploy:

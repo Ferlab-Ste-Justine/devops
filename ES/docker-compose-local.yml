@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.5'
 services:
 
   elasticsearch:
@@ -13,6 +13,12 @@ services:
       placement:
         constraints: [node.labels.app_role == elasticsearch]
       endpoint_mode: dnsrr
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   elastic:
     networks:
@@ -43,6 +49,13 @@ services:
       - 5601:5601
     networks:
       - es
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5601/status"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 networks:
   es:
   proxy:
