@@ -1,10 +1,9 @@
-version: '3.3'
+version: '3.5'
 
 services:
 
   postgres:
     image: postgres
-    restart: always
     deploy:
       mode: replicated
       replicas: 1
@@ -23,7 +22,6 @@ services:
 
   keycloak:
     image: jboss/keycloak:4.8.3.Final
-    restart: always
     depends_on:
       - postgres
     ports:
@@ -43,6 +41,13 @@ services:
       JDBC_PARAMS: "connectTimeout=30"
       DB_ADDR: "postgres"
       KEYCLOAK_IMPORT: /tmp/realm-export.json
+    healthcheck:
+      test: ["CMD", "curl", "-kf", "https://localhost:8443/auth/"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 
     networks:
       - keycloak
