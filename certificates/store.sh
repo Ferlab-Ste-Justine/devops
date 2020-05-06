@@ -1,0 +1,19 @@
+export CERTIFICATE_DIRECTORY=${CERTIFICATE_DIRECTORY-.}
+export PRIVATE_KEY=${PRIVATE_KEY-privkey.pem}
+export CERTIFICATE=${CERTIFICATE-fullchain.pem}
+export CERTIFICATE_SECRET_PREFIX=${CERTIFICATE_SECRET_PREFIX-certificate}
+
+KEY_SECRET_EXISTS=$(docker secret ls | grep ${CERTIFICATE_SECRET_PREFIX}_key)
+CERTIFICATE_SECRET_EXISTS=$(docker secret ls | grep ${CERTIFICATE_SECRET_PREFIX}_certificate)
+
+if [ ! -z "$KEY_SECRET_EXISTS" ]; then
+    docker secret rm ${CERTIFICATE_SECRET_PREFIX}_key;
+fi
+
+if [ ! -z "$CERTIFICATE_SECRET_EXISTS" ]; then
+    docker secret rm ${CERTIFICATE_SECRET_PREFIX}_certificate;
+fi
+
+
+docker secret create ${CERTIFICATE_SECRET_PREFIX}_key $CERTIFICATE_DIRECTORY/$PRIVATE_KEY;
+docker secret create ${CERTIFICATE_SECRET_PREFIX}_certificate $CERTIFICATE_DIRECTORY/$CERTIFICATE;
