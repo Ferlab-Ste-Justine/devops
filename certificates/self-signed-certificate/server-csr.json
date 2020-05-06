@@ -1,0 +1,20 @@
+{
+    "CN": "dev.chusj-clin-dev.org",
+    "SAN": "dev.chusj-clin-dev.org",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CA",
+            "L": "Montreal",
+            "O": "Sainte-Justine Hospital",
+            "OU": "Chu",
+            "ST": "Quebec"
+        }
+    ],
+    "hosts": [
+        "dev.chusj-clin-dev.org"
+    ]
+}

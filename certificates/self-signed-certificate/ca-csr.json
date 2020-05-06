@@ -1,0 +1,16 @@
+{
+    "CN": "clin",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CA",
+            "L": "Montreal",
+            "O": "Sainte-Justine Hospital",
+            "OU": "Chu",
+            "ST": "Quebec"
+        }
+    ]
+}
