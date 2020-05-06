@@ -15,5 +15,11 @@ if [ ! -d "$POSTGRES_DIRECTORY" ]; then
     mkdir -p $POSTGRES_DIRECTORY;
 fi
 
+if [ ! -f fullchain.pem ]; then
+    (cd ../certificates/self-signed-certificate; ./generate_self_signed.sh);
+    cp ../certificates/fullchain.pem .;
+    cp ../certificates/privkey.pem .;
+fi
+
 ./nodeUpdate.sh;
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker stack deploy -c docker-compose.yml keycloak

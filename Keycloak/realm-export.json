@@ -543,7 +543,8 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "/auth/admin/clin/console/*"
+        "/auth/admin/clin/console/*",
+        "https://clin.cr-ste-justine.xyz:8443/auth/admin/master/console/"
       ],
       "webOrigins": [],
       "notBefore": 0,

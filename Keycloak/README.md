@@ -64,6 +64,12 @@ From your host, you can access the keycloak endpoints at (you'll need to accept 
 https://localhost:8443/auth
 ```
 
+Assuming you followed the directions for a self-signed certificate in the **certificates** directory, you can also access it in your browser without security warnings at:
+
+```
+https://dev.chusj-clin-dev.org:8443/auth/
+```
+
 When inside one of the containers, you can access the keycloak endpoints at:
 
 ```

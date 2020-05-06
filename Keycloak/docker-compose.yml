@@ -3,7 +3,7 @@ version: '3.5'
 services:
 
   postgres:
-    image: postgres
+    image: postgres:11
     deploy:
       mode: replicated
       replicas: 1
@@ -27,7 +27,9 @@ services:
     ports:
       - 8443:8443
     volumes:
-      - .:/tmp
+      - ./realm-export.json:/tmp/realm-export.json
+      - ./fullchain.pem:/etc/x509/https/tls.crt
+      - ./privkey.pem:/etc/x509/https/tls.key
     deploy:
       mode: replicated
       replicas: 1
@@ -42,7 +44,7 @@ services:
       DB_ADDR: "postgres"
       KEYCLOAK_IMPORT: /tmp/realm-export.json
     healthcheck:
-      test: ["CMD", "curl", "-kf", "https://localhost:8443/auth/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/"]
       interval: 10s
       timeout: 10s
       retries: 3
