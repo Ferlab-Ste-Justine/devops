@@ -27,6 +27,9 @@ services:
     image: 'nginx:1'
     ports:
       - '9200:9200'
+    deploy:
+      placement:
+        constraints: [node.labels.schedulable == true]
     command: |
       /bin/bash -c "echo '
       server {
@@ -49,6 +52,9 @@ services:
       - 5601:5601
     networks:
       - es
+    deploy:
+      placement:
+        constraints: [node.labels.schedulable == true]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5601/status"]
       interval: 10s
