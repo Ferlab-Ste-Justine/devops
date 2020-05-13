@@ -5,6 +5,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints: [node.labels.schedulable == true]
     depends_on:
       - "devbox-db"
     ports:
