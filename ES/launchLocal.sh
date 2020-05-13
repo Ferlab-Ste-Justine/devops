@@ -14,5 +14,10 @@ if [ -z "$PROXY_NETWORK_EXISTS" ]; then
     docker network create -d overlay --attachable proxy;
 fi
 
+ELASTICSEARCH_INTERNAL_NETWORK_EXISTS=$(docker network ls | grep elasticsearch-internal)
+if [ -z "$ELASTICSEARCH_INTERNAL_NETWORK_EXISTS" ]; then
+    docker network create -d overlay --attachable elasticsearch-internal;
+fi
+
 docker node update --label-add app_role=elasticsearch $(docker node ls -q);
 docker stack deploy -c docker-compose-local.yml elasticsearch;
