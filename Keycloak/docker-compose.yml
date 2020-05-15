@@ -9,10 +9,20 @@ services:
       replicas: 1
       placement:
         constraints: [node.labels.db_role == postgresql]
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 2048M
+        reservations:
+          cpus: '1.00'
+          memory: 1024M
     environment:
       POSTGRES_USER: "keycloak"
       POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
       POSTGRES_DB: "keycloak"
+    #https://www.postgresql.org/docs/12/runtime-config-resource.html
+    #Max RAM = 256 + 200*4 + 8*64 = 1568 ~ 2048 (2GB)
+    command: -c 'shared_buffers=256MB' -c 'work_mem=4MB' -c 'maintenance_work_mem=64MB' -c 'max_worker_processes=8'
     volumes:
       - ./postgres:/var/lib/postgresql/data
     expose:
@@ -35,6 +45,13 @@ services:
       replicas: 1
       placement:
         constraints: [node.labels.node_role == devops]
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 3072M
+        reservations:
+          cpus: '1.00'
+          memory: 2048M
     environment:
       KEYCLOAK_USER: "admin"
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
@@ -43,6 +60,7 @@ services:
       JDBC_PARAMS: "connectTimeout=30"
       DB_ADDR: "postgres"
       KEYCLOAK_IMPORT: /tmp/realm-export.json
+      JAVA_OPTS: "-server -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/auth/"]
       interval: 10s
