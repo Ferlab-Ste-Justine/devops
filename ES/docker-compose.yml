@@ -10,19 +10,20 @@ services:
       - /home/ubuntu/esdata:/usr/share/elasticsearch/data
     environment:
       #https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
-      ES_JAVA_OPTS: "-Xms2048m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m"
+      ES_JAVA_OPTS: "-Xms4096m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m"
+      discovery.type: single-node
     deploy:
-      mode: 'global'
+      mode: replicated
+      replicas: 1
       placement:
-        constraints: [node.labels.app_role == elasticsearch]
-      endpoint_mode: dnsrr
+        constraints: [node.labels.node_role == devops]
       resources:
         limits:
-          cpus: '2.00'
-          memory: 3072M
+          cpus: '12.00'
+          memory: 6144M
         reservations:
-          cpus: '1.00'
-          memory: 2048M
+          cpus: '6.00'
+          memory: 4096M
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
       interval: 10s

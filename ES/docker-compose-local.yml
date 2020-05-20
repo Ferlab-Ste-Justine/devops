@@ -20,9 +20,6 @@ services:
         limits:
           cpus: '2.00'
           memory: 3072M
-        reservations:
-          cpus: '1.00'
-          memory: 2048M
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
       interval: 10s
@@ -42,9 +39,6 @@ services:
         limits:
           cpus: '1.00'
           memory: 1024M
-        reservations:
-          cpus: '0.5'
-          memory: 512M
     command: |
       /bin/bash -c "echo '
       server {
@@ -70,9 +64,6 @@ services:
         limits:
           cpus: '1.00'
           memory: 1024M
-        reservations:
-          cpus: '0.5'
-          memory: 512M
     networks:
       - es
     healthcheck:
