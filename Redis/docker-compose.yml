@@ -15,8 +15,23 @@ services:
       replicas: 1
       placement:
         constraints: [node.labels.node_role == devops]
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 2048M
+        reservations:
+          cpus: '1.00'
+          memory: 1024M
+    command: [ "redis-server", "/geneset-redis-v1" ]
+    configs:
+      - geneset-redis-v1
+
 networks:
   proxy:
+    external: true
+
+configs:
+  geneset-redis-v1:
     external: true
 
 volumes:

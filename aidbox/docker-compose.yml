@@ -7,6 +7,13 @@ services:
       replicas: 1
       placement:
         constraints: [node.labels.schedulable == true]
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 1024M
+        reservations:
+          cpus: '1.00'
+          memory: 1024M
     depends_on:
       - "devbox-db"
     ports:
@@ -18,6 +25,11 @@ services:
     networks:
       - aidbox
       - aidbox-db
+    command: [
+      "/bin/sh",
+      "-c",
+      "java -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -XX:-OmitStackTraceInFastThrow   -Dcom.sun.management.jmxremote   -Dcom.sun.management.jmxremote.host=127.0.0.1   -Djava.rmi.server.hostname=127.0.0.1   -Dcom.sun.management.jmxremote.port=9099   -Dcom.sun.management.jmxremote.authenticate=false   -Dcom.sun.management.jmxremote.ssl=false   -jar /aidbox.jar -m devbox.core"
+    ]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${AIDBOX_PORT}/health"]
       interval: 10s
@@ -32,12 +44,22 @@ services:
       replicas: 1
       placement:
         constraints: [node.labels.db_role == postgresql]
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 2048M
+        reservations:
+          cpus: '1.00'
+          memory: 1024M
     volumes:
       - "./pgdata:/data"
     environment:
       POSTGRES_USER:     "${PGUSER}"
       POSTGRES_PASSWORD: "${PGPASSWORD}"
       POSTGRES_DB:       "${PGDATABASE}"
+    #https://www.postgresql.org/docs/12/runtime-config-resource.html
+    #Max RAM = 256 + 200*4 + 8*64 = 1568 ~ 2048 (2GB)
+    command: -c 'shared_buffers=256MB' -c 'work_mem=4MB' -c 'maintenance_work_mem=64MB' -c 'max_worker_processes=8'
     networks:
       - aidbox-db
 
