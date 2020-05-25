@@ -11,19 +11,11 @@ services:
     environment:
       #https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
       ES_JAVA_OPTS: "-Xms4096m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m"
-      discovery.type: single-node
     deploy:
-      mode: replicated
-      replicas: 1
+      mode: 'global'
       placement:
-        constraints: [node.labels.node_role == devops]
-      resources:
-        limits:
-          cpus: '12.00'
-          memory: 6144M
-        reservations:
-          cpus: '6.00'
-          memory: 4096M
+        constraints: [node.labels.app_role == elasticsearch]
+      endpoint_mode: dnsrr
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
       interval: 10s
