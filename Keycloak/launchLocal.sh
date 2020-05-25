@@ -21,5 +21,4 @@ if [ ! -f fullchain.pem ]; then
     cp ../certificates/privkey.pem .;
 fi
 
-./nodeUpdate.sh;
 POSTGRESQL_PASSWORD=1q2w3e4r KEYCLOAK_PASSWORD=1q2w3e4r docker stack deploy -c docker-compose.yml keycloak

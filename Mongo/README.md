@@ -1,3 +1,3 @@
 ```
-docker node update --label-add app_db=mongo workflow
+docker node update --label-add node_role=generic workflow
 ```

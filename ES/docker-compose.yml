@@ -32,7 +32,7 @@ services:
       - '9200:9200'
     deploy:
       placement:
-        constraints: [node.labels.schedulable == true]
+        constraints: [node.labels.app_role == generic]
       resources:
         limits:
           cpus: '1.00'
@@ -64,7 +64,7 @@ services:
       - elasticsearch-internal
     deploy:
       placement:
-        constraints: [node.labels.schedulable == true]
+        constraints: [node.labels.app_role == generic]
       resources:
         limits:
           cpus: '1.00'

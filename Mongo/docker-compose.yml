@@ -11,7 +11,9 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.labels.app_db == mongo]
+        constraints:
+        - node.labels.app_role == generic
+        - node.labels.state_anchor == true
 
 volumes:
   db-data:

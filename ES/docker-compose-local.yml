@@ -12,9 +12,9 @@ services:
       #https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
       ES_JAVA_OPTS: "-Xms2048m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m"
     deploy:
-      mode: 'global'
       placement:
-        constraints: [node.labels.app_role == elasticsearch]
+        constraints: [node.labels.app_role == generic]
+      mode: 'global'
       endpoint_mode: dnsrr
       resources:
         limits:
@@ -35,6 +35,8 @@ services:
     ports:
       - '9200:9200'
     deploy:
+      placement:
+        constraints: [node.labels.app_role == generic]
       resources:
         limits:
           cpus: '1.00'
@@ -60,6 +62,8 @@ services:
     ports:
       - 5601:5601
     deploy:
+      placement:
+        constraints: [node.labels.app_role == generic]
       resources:
         limits:
           cpus: '1.00'

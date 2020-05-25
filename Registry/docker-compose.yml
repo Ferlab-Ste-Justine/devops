@@ -13,7 +13,9 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.labels.schedulable == true]
+        constraints: 
+        - node.labels.app_role == generic
+        - node.labels.state_anchor == true
 
 volumes:
   registry-data:
