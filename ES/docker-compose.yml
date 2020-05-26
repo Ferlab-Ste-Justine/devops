@@ -5,25 +5,17 @@ services:
     networks:
       - elasticsearch-internal
     image: 'elasticsearch:6.7.0'
-    command: [ elasticsearch, -E, network.host=0.0.0.0, -E, discovery.zen.ping.unicast.hosts=elasticsearch, -E, discovery.zen.minimum_master_nodes=1 ]
+    command: [ elasticsearch, -E, network.host=0.0.0.0, -E, discovery.zen.ping.unicast.hosts=elasticsearch, -E, discovery.zen.minimum_master_nodes=2 ]
     volumes:
       - /home/ubuntu/esdata:/usr/share/elasticsearch/data
     environment:
       #https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
-      ES_JAVA_OPTS: "-Xms4096m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m"
-      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms8192m -Xmx8192m"
     deploy:
-      mode: replicated
-      replicas: 1
+      mode: 'global'
       placement:
-        constraints: [node.labels.node_role == devops]
-      resources:
-        limits:
-          cpus: '12.00'
-          memory: 6144M
-        reservations:
-          cpus: '6.00'
-          memory: 4096M
+        constraints: [node.labels.app_role == elasticsearch]
+      endpoint_mode: dnsrr
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
       interval: 10s
@@ -40,7 +32,7 @@ services:
       - '9200:9200'
     deploy:
       placement:
-        constraints: [node.labels.schedulable == true]
+        constraints: [node.labels.app_role == generic]
       resources:
         limits:
           cpus: '1.00'
@@ -72,7 +64,7 @@ services:
       - elasticsearch-internal
     deploy:
       placement:
-        constraints: [node.labels.schedulable == true]
+        constraints: [node.labels.app_role == generic]
       resources:
         limits:
           cpus: '1.00'

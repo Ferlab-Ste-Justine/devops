@@ -21,7 +21,6 @@ if [ ! -d "$POSTGRES_DIRECTORY" ]; then
     mkdir -p $POSTGRES_DIRECTORY;
 fi
 
-./nodeUpdate.sh;
 (
     export $(cat .env | xargs);
     docker stack deploy -c docker-compose.yml aidbox;
