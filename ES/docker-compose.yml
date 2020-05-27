@@ -5,23 +5,22 @@ services:
     networks:
       - elasticsearch-internal
     image: 'elasticsearch:6.7.0'
-    command: [ elasticsearch, -E, network.host=0.0.0.0, -E, discovery.zen.ping.unicast.hosts=elasticsearch, -E, discovery.zen.minimum_master_nodes=2 ]
+    command: [ 
+      elasticsearch, 
+      -E, network.host=0.0.0.0,
+      -E, discovery.zen.ping.unicast.hosts=elasticsearch, 
+      -E, discovery.zen.minimum_master_nodes=2
+    ]
     volumes:
       - /home/ubuntu/esdata:/usr/share/elasticsearch/data
     environment:
       #https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
-      ES_JAVA_OPTS: "-Xms8192m -Xmx8192m"
+      ES_JAVA_OPTS: "-Xms16384m -Xmx16384m"
     deploy:
       mode: 'global'
       placement:
         constraints: [node.labels.app_role == elasticsearch]
       endpoint_mode: dnsrr
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
   elastic:
     networks:
