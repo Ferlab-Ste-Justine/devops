@@ -9,9 +9,7 @@ services:
       elasticsearch, 
       -E, network.host=0.0.0.0,
       -E, discovery.zen.ping.unicast.hosts=elasticsearch, 
-      -E, discovery.zen.minimum_master_nodes=2,
-      -E, gateway.expected_nodes=3,
-      -E, gateway.recover_after_nodes=2
+      -E, discovery.zen.minimum_master_nodes=2
     ]
     volumes:
       - /home/ubuntu/esdata:/usr/share/elasticsearch/data
