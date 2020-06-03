@@ -23,3 +23,13 @@
 hs_err_pid*
 
 .idea
+
+aidbox/secrets/aidbox_root_user
+aidbox/secrets/aidbox_root_password
+aidbox/secrets/aidbox_admin_user
+aidbox/secrets/aidbox_admin_password
+aidbox/secrets/aidbox_db_user
+aidbox/secrets/aidbox_db_password
+aidbox/secrets/aidbox_license_id
+aidbox/secrets/aidbox_license_key
+
