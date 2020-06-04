@@ -1,3 +1,6 @@
+![](https://github.com/cr-ste-justine/devops/workflows/Build%20Ansible%20Playbooks%20Image/badge.svg)
+![](https://github.com/cr-ste-justine/devops/workflows/Publish%20Ansible%20Playbooks%20Image/badge.svg)
+
 # Devops
 Deployments repo - Docker and scripts
 
