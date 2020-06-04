@@ -24,6 +24,7 @@ hs_err_pid*
 
 .idea
 
+#Docker secrets
 aidbox/secrets/aidbox_root_user
 aidbox/secrets/aidbox_root_password
 aidbox/secrets/aidbox_admin_user
@@ -33,3 +34,12 @@ aidbox/secrets/aidbox_db_password
 aidbox/secrets/aidbox_license_id
 aidbox/secrets/aidbox_license_key
 
+Keycloak/secrets/keycloak_admin_password
+Keycloak/secrets/keycloak_admin_user
+Keycloak/secrets/keycloak_clin_client_secret
+Keycloak/secrets/keycloak_db_password
+Keycloak/secrets/keycloak_db_user
+
+#Certificates and their signing requests
+*.csr
+*.pem
