@@ -1,0 +1,24 @@
+---
+- name: Set orchestration directory to copy
+  hosts: all
+  tasks:
+  - set_fact: orchestration_source_dir=/opt/orchestration
+
+- name: Copy the orchestration scripts
+  hosts: all
+  tasks:
+  - copy:
+      src: "{{ orchestration_source_dir }}/"
+      dest: "{{ deployment_dir }}/"
+
+- name: Deploy
+  hosts: all
+  roles:
+    - { role: ./roles/apply, deployment_dir: deployment_dir, deployment_stack: deployment_stack, become: true }
+
+- name: Cleanup deployment directory
+  hosts: all
+  tasks:
+  - file:
+      path: "{{ deployment_dir }}"
+      state: absent
