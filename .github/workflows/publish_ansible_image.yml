@@ -1,0 +1,19 @@
+name: Publish Ansible Playbooks Image
+
+on:
+  push:
+    branches:
+    - dev
+    paths:
+    - 'ansible/**'
+
+jobs:
+  build:
+    name: Publish Image
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Log into registry
+      run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u chusj --password-stdin
+    - name: Publish the image
+      run: cd ansible && ./push-image.sh
