@@ -1,7 +1,8 @@
 ---
 
 - name: Apply swarm deployment
-  script: apply.sh
+  script: 
+    cmd: apply.sh
     chdir: "{{ deployment_dir }}"
   environment:
     DEPLOYMENT_STACK: "{{ deployment_stack }}"
