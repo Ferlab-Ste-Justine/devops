@@ -4,7 +4,7 @@ if [ ! -f ca.pem ]; then
     docker run --rm \
                -v $(pwd):/opt \
                magnitus/cfssl:latest \
-               cfssl gencert -initca ca-csr.json | cfssljson -bare ca;
+               /bin/bash -c "cfssl gencert -initca ca-csr.json | cfssljson -bare ca";
 
 else
     echo "CA certificate already exists. It will not be re-generated. Please delete it manually if you wish to do so.";
@@ -18,12 +18,13 @@ fi
 docker run --rm \
             -v $(pwd):/opt \
             magnitus/cfssl:latest \
+            /bin/bash -c "\
             cfssl gencert \
             -ca=ca.pem \
             -ca-key=ca-key.pem \
             -config=ca-config.json \
             -profile=clin \
-            server-csr.json | cfssljson -bare server;
+            server-csr.json | cfssljson -bare server";
 
 cp server-key.pem ../privkey.pem;
 cp server.pem ../fullchain.pem;
