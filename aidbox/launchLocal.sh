@@ -27,5 +27,5 @@ fi
 
 (
     export $(cat .env | xargs);
-    docker stack deploy -c docker-compose.yml aidbox;
+    docker stack deploy -c docker-compose-local.yml aidbox;
 )
