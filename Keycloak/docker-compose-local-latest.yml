@@ -37,7 +37,6 @@ services:
       - ./realm-export.json:/tmp/realm-export.json
       - ./fullchain.pem:/etc/x509/https/tls.crt
       - ./privkey.pem:/etc/x509/https/tls.key
-      - ./clin-keycloak-theme/standalone.xml:/opt/jboss/keycloak/standalone/configuration/standalone.xml
       - ./clin-keycloak-theme:/opt/jboss/keycloak/themes/clin-keycloak-theme
     deploy:
       mode: replicated
