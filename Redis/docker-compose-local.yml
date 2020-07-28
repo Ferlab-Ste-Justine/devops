@@ -1,0 +1,37 @@
+version: "3.3"
+
+services:
+
+  redis:
+    image: redis:5.0.5
+    ports:
+      - 6379:6379
+    networks:
+      - proxy
+    volumes:
+      - redis-data:/data
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+        - node.labels.app_role == generic
+        - node.labels.state_anchor == true
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 2048M
+    command: [ "redis-server", "/geneset-redis-v1" ]
+    configs:
+      - geneset-redis-v1
+
+networks:
+  proxy:
+    external: true
+
+configs:
+  geneset-redis-v1:
+    external: true
+
+volumes:
+  redis-data:

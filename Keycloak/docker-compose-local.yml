@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
 
-  postgres-keycloak:
+  postgres:
     image: postgres:11
     deploy:
       mode: replicated
@@ -15,9 +15,6 @@ services:
         limits:
           cpus: '2.00'
           memory: 2048M
-        reservations:
-          cpus: '1.00'
-          memory: 1024M
     environment:
       POSTGRES_USER: "keycloak"
       POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
@@ -26,16 +23,16 @@ services:
     #Max RAM = 256 + 200*4 + 8*64 = 1568 ~ 2048 (2GB)
     command: -c 'shared_buffers=256MB' -c 'work_mem=4MB' -c 'maintenance_work_mem=64MB' -c 'max_worker_processes=8'
     volumes:
-      - ./keycloakdb:/var/lib/postgresql/data
+      - ./postgres:/var/lib/postgresql/data
     networks:
       - keycloak
 
-  keycloak-10:
+  keycloak:
     image: jboss/keycloak:10.0.2
     depends_on:
-      - postgres-keycloak
+      - postgres
     ports:
-      - 8543:8443
+      - 8443:8443
     volumes:
       - ./realm-export.json:/tmp/realm-export.json
       - ./fullchain.pem:/etc/x509/https/tls.crt
@@ -52,21 +49,19 @@ services:
         limits:
           cpus: '2.00'
           memory: 3072M
-        reservations:
-          cpus: '1.00'
-          memory: 2048M
     environment:
       KEYCLOAK_USER: "admin"
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
       DB_VENDOR: "postgres"
       DB_PASSWORD: ${POSTGRESQL_PASSWORD}
+      DB_ADDR: "postgres"
+      DB_DATABASE: "keycloak"
+      DB_USER: "keycloak"
       JDBC_PARAMS: "connectTimeout=30"
-      DB_ADDR: "postgres-keycloak"
       KEYCLOAK_IMPORT: /tmp/realm-export.json
       JAVA_OPTS: "-server -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/auth/"]
-      interval: 10s
       timeout: 10s
       retries: 3
       start_period: 30s
