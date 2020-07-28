@@ -24,13 +24,11 @@ services:
     command: -c 'shared_buffers=256MB' -c 'work_mem=4MB' -c 'maintenance_work_mem=64MB' -c 'max_worker_processes=8'
     volumes:
       - ./postgres:/var/lib/postgresql/data
-    expose:
-      - "5432"
     networks:
       - keycloak
 
   keycloak:
-    image: jboss/keycloak:4.8.3.Final
+    image: jboss/keycloak:10.0.2
     depends_on:
       - postgres
     ports:
@@ -39,6 +37,7 @@ services:
       - ./realm-export.json:/tmp/realm-export.json
       - ./fullchain.pem:/etc/x509/https/tls.crt
       - ./privkey.pem:/etc/x509/https/tls.key
+      - ./clin-keycloak-theme:/opt/jboss/keycloak/themes/clin-keycloak-theme
     deploy:
       mode: replicated
       replicas: 1
@@ -55,13 +54,14 @@ services:
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
       DB_VENDOR: "postgres"
       DB_PASSWORD: ${POSTGRESQL_PASSWORD}
-      JDBC_PARAMS: "connectTimeout=30"
       DB_ADDR: "postgres"
+      DB_DATABASE: "keycloak"
+      DB_USER: "keycloak"
+      JDBC_PARAMS: "connectTimeout=30"
       KEYCLOAK_IMPORT: /tmp/realm-export.json
       JAVA_OPTS: "-server -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/auth/"]
-      interval: 10s
       timeout: 10s
       retries: 3
       start_period: 30s
