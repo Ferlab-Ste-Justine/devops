@@ -9,6 +9,12 @@ if [ -z "$PROXY_NETWORK_EXISTS" ]; then
     docker network create -d overlay --attachable proxy;
 fi
 
+ES7_NETWORK_EXISTS=$(docker network ls | grep elasticsearch7-internal)
+if [ -z "$ES7_NETWORK_EXISTS" ]; then
+    docker network create -d overlay --attachable elasticsearch7-internal;
+fi
+
+
 export DATA_DIRECTORY="/home/ubuntu/es7data";
 if [ ! -d "$DATA_DIRECTORY" ]; then
     mkdir -p $DATA_DIRECTORY;
