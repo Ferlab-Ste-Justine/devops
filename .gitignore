@@ -43,3 +43,5 @@ Keycloak/secrets/keycloak_db_user
 #Certificates and their signing requests
 *.csr
 *.pem
+
+**/node_modules
