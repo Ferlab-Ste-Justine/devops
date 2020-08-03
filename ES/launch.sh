@@ -14,10 +14,4 @@ if [ -z "$ES7_NETWORK_EXISTS" ]; then
     docker network create -d overlay --attachable elasticsearch7-internal;
 fi
 
-
-export DATA_DIRECTORY="/home/ubuntu/es7data";
-if [ ! -d "$DATA_DIRECTORY" ]; then
-    mkdir -p $DATA_DIRECTORY;
-fi
-
 docker stack deploy -c docker-compose.yml elasticsearch7;
