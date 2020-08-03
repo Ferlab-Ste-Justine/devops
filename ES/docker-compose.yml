@@ -8,6 +8,10 @@ services:
     command: [ 
       elasticsearch, 
       -E, network.host=0.0.0.0,
+      -E, "cluster.initial_master_nodes=elasticsearch7-1,elasticsearch7-2,elasticsearch7-3",
+      -E, "discovery.seed_hosts=elasticsearch7-1,elasticsearch7-2,elasticsearch7-3",
+      -E, cluster.name=es7-cluster,
+      -E, node.name=elasticsearch7-1
     ]
     volumes:
       - /home/ubuntu/es7data:/usr/share/elasticsearch/data
@@ -17,7 +21,7 @@ services:
     deploy:
       mode: 'global'
       placement:
-        constraints: [node.labels.app_role == node_1]
+        constraints: [node.labels.es_placement == node_1]
       endpoint_mode: dnsrr
 
   elasticsearch7-2:
@@ -27,6 +31,10 @@ services:
     command: [
       elasticsearch,
       -E, network.host=0.0.0.0,
+      -E, "cluster.initial_master_nodes=elasticsearch7-1,elasticsearch7-2,elasticsearch7-3",
+      -E, "discovery.seed_hosts=elasticsearch7-1,elasticsearch7-2,elasticsearch7-3",
+      -E, cluster.name=es7-cluster,
+      -E, node.name=elasticsearch7-2
     ]
     volumes:
       - /home/ubuntu/es7data:/usr/share/elasticsearch/data
@@ -36,7 +44,7 @@ services:
     deploy:
       mode: 'global'
       placement:
-        constraints: [node.labels.app_role == node_2]
+        constraints: [node.labels.es_placement == node_2]
       endpoint_mode: dnsrr
 
   elasticsearch7-3:
@@ -46,6 +54,10 @@ services:
     command: [
       elasticsearch,
       -E, network.host=0.0.0.0,
+      -E, "cluster.initial_master_nodes=elasticsearch7-1,elasticsearch7-2,elasticsearch7-3",
+      -E, "discovery.seed_hosts=elasticsearch7-1,elasticsearch7-2,elasticsearch7-3",
+      -E, cluster.name=es7-cluster,
+      -E, node.name=elasticsearch7-3
     ]
     volumes:
       - /home/ubuntu/es7data:/usr/share/elasticsearch/data
@@ -55,7 +67,7 @@ services:
     deploy:
       mode: 'global'
       placement:
-        constraints: [node.labels.app_role == node_3]
+        constraints: [node.labels.es_placement == node_3]
       endpoint_mode: dnsrr
 
   elastic:
@@ -77,13 +89,12 @@ services:
           memory: 512M
     command: |
       /bin/bash -c "echo '
-      http {
-          upstream es7cluster {
-              server elasticsearch7-1:9200;
-              server elasticsearch7-2:9200;
-              server elasticsearch7-3:9200;
-          }
+      upstream es7cluster {
+          server elasticsearch7-1:9200;
+          server elasticsearch7-2:9200;
+          server elasticsearch7-3:9200;
       }
+
       server {
         listen 9200;
         add_header X-Frame-Options "SAMEORIGIN";
