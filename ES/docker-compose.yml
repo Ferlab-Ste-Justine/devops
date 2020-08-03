@@ -8,7 +8,6 @@ services:
     command: [ 
       elasticsearch, 
       -E, network.host=0.0.0.0,
-      -E, cluster.initial_master_nodes=elasticsearch7-1
     ]
     volumes:
       - /home/ubuntu/es7data:/usr/share/elasticsearch/data
@@ -18,7 +17,7 @@ services:
     deploy:
       mode: 'global'
       placement:
-        constraints: [node.labels.app_role == elasticsearch]
+        constraints: [node.labels.app_role == node_1]
       endpoint_mode: dnsrr
 
   elasticsearch7-2:
@@ -28,7 +27,6 @@ services:
     command: [
       elasticsearch,
       -E, network.host=0.0.0.0,
-      -E, cluster.initial_master_nodes=elasticsearch7-1
     ]
     volumes:
       - /home/ubuntu/es7data:/usr/share/elasticsearch/data
@@ -38,7 +36,7 @@ services:
     deploy:
       mode: 'global'
       placement:
-        constraints: [node.labels.app_role == elasticsearch]
+        constraints: [node.labels.app_role == node_2]
       endpoint_mode: dnsrr
 
   elasticsearch7-3:
@@ -48,7 +46,6 @@ services:
     command: [
       elasticsearch,
       -E, network.host=0.0.0.0,
-      -E, cluster.initial_master_nodes=elasticsearch7-1
     ]
     volumes:
       - /home/ubuntu/es7data:/usr/share/elasticsearch/data
@@ -58,7 +55,7 @@ services:
     deploy:
       mode: 'global'
       placement:
-        constraints: [node.labels.app_role == elasticsearch]
+        constraints: [node.labels.app_role == node_3]
       endpoint_mode: dnsrr
 
   elastic:
