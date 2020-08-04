@@ -89,6 +89,8 @@ services:
           memory: 512M
     command: |
       /bin/bash -c "echo '
+      client_max_body_size 0;
+      
       upstream es7cluster {
           server elasticsearch7-1:9200;
           server elasticsearch7-2:9200;
