@@ -1,22 +1,6 @@
-SWARM=$(docker node ls -q 2>&1 >/dev/null)
-if [[ $SWARM = Error* ]]; then
-    echo "Docker must be running in swarm mode to execute this script";
-    exit 1;
-fi
-
 export DATA_DIRECTORY="$(pwd)/esdata";
 if [ ! -d "$DATA_DIRECTORY" ]; then
     mkdir -p $DATA_DIRECTORY;
 fi
 
-PROXY_NETWORK_EXISTS=$(docker network ls | grep proxy)
-if [ -z "$PROXY_NETWORK_EXISTS" ]; then
-    docker network create -d overlay --attachable proxy;
-fi
-
-ELASTICSEARCH_INTERNAL_NETWORK_EXISTS=$(docker network ls | grep elasticsearch-internal)
-if [ -z "$ELASTICSEARCH_INTERNAL_NETWORK_EXISTS" ]; then
-    docker network create -d overlay --attachable elasticsearch-internal;
-fi
-
-docker stack deploy -c docker-compose-local.yml elasticsearch;
+docker-compose -f docker-compose-local.yml up -d;

@@ -64,7 +64,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/auth/"]
       timeout: 10s
       retries: 3
-      start_period: 30s
+      start_period: 120s
 
 
     networks:
