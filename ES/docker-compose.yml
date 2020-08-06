@@ -17,7 +17,7 @@ services:
       - /home/ubuntu/es7data:/usr/share/elasticsearch/data
     environment:
       #https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
-      ES_JAVA_OPTS: "-Xms4096m -Xmx4096m"
+      ES_JAVA_OPTS: "-Xms16384m -Xmx16384m"
     deploy:
       mode: 'global'
       placement:
@@ -40,7 +40,7 @@ services:
       - /home/ubuntu/es7data:/usr/share/elasticsearch/data
     environment:
       #https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
-      ES_JAVA_OPTS: "-Xms4096m -Xmx4096m"
+      ES_JAVA_OPTS: "-Xms16384m -Xmx16384m"
     deploy:
       mode: 'global'
       placement:
@@ -63,7 +63,7 @@ services:
       - /home/ubuntu/es7data:/usr/share/elasticsearch/data
     environment:
       #https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
-      ES_JAVA_OPTS: "-Xms4096m -Xmx4096m"
+      ES_JAVA_OPTS: "-Xms16384m -Xmx16384m"
     deploy:
       mode: 'global'
       placement:
