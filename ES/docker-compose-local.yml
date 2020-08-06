@@ -7,7 +7,6 @@ services:
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
-      - reindex.remote.whitelist=*:*
     ulimits:
       memlock:
         soft: -1
