@@ -45,3 +45,6 @@ Keycloak/secrets/keycloak_db_user
 *.pem
 
 **/node_modules
+
+#ES data folder
+ES/esdata
